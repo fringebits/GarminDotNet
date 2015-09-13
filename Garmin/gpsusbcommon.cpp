@@ -213,6 +213,7 @@ void
 gusb_id_unit(struct garmin_unit_info *gu)
 {
 	static const char oid[12] = {20, 0, 0, 0, 0xfe, 0, 0, 0, 0, 0, 0, 0};
+
 	garmin_usb_packet iresp;
 	int i;
 

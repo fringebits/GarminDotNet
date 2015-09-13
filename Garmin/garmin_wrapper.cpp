@@ -31,10 +31,9 @@ extern char last_error[];
 
 gpsdevh *my_gps_devh;
 
-
-wxString GetLastGarminError(void)
+std::string GetLastGarminError()
 {
-      return wxString(GetDeviceLastError(),  wxConvUTF8);
+      return GetDeviceLastError();
 }
 
 /*
@@ -42,45 +41,32 @@ wxString GetLastGarminError(void)
       This is necessary for aborts in Windows environment, since ports cannot be multiply opened.
 */
 
-/*  Wrapped interface from higher level objects   */
-int Garmin_GPS_Init( wxString &port_name)
+int Garmin_GPS_Open(const char* port_name)
 {
-      int ret;
 #ifdef GPS_DEBUG0
-//      if (getenv("OPENCPN_GPS_ERROR") != NULL)
-	GPS_Enable_Error();
-//      if (getenv("OPENCPN_GPS_WARNING") != NULL)
-	GPS_Enable_Warning();
-//      if (getenv("OPENCPN_GPS_USER") != NULL)
-	GPS_Enable_User();
-//      if (getenv("OPENCPN_GPS_DIAGNOSE") != NULL)
-	GPS_Enable_Diagnose();
+    //      if (getenv("OPENCPN_GPS_ERROR") != NULL)
+    GPS_Enable_Error();
+    //      if (getenv("OPENCPN_GPS_WARNING") != NULL)
+    GPS_Enable_Warning();
+    //      if (getenv("OPENCPN_GPS_USER") != NULL)
+    GPS_Enable_User();
+    //      if (getenv("OPENCPN_GPS_DIAGNOSE") != NULL)
+    GPS_Enable_Diagnose();
 #endif
-      char m[1];
-      m[0] = '\0';
 
-      GPS_Error(m);
-
-      ret = GPS_Init(port_name.mb_str());
-      VerifyPortClosed();
-
-      return ret;
+    return GPS_Init(port_name);
 }
 
-int Garmin_GPS_Open( wxString &port_name )
+#if (USE_WRAPPER)
+
+int Garmin_GPS_PVT_On(const std::string &port_name)
 {
-    return GPS_Init(port_name.mb_str());
+    return Garmin_Serial_GPS_PVT_On( port_name.c_str() );
 }
 
-
-int Garmin_GPS_PVT_On( wxString &port_name )
+int Garmin_GPS_PVT_Off(const std::string &port_name)
 {
-    return Garmin_Serial_GPS_PVT_On( port_name.mb_str() );
-}
-
-int Garmin_GPS_PVT_Off( wxString &port_name )
-{
-    return Garmin_Serial_GPS_PVT_Off( port_name.mb_str() );
+    return Garmin_Serial_GPS_PVT_Off(port_name.c_str());
 }
 
 int Garmin_GPS_GetPVT(void *pvt)
@@ -94,12 +80,12 @@ void Garmin_GPS_ClosePortVerify(void)
     VerifyPortClosed();
 }
 
-wxString Garmin_GPS_GetSaveString()
+std::string Garmin_GPS_GetSaveString()
 {
-      return wxString(gps_save_string,  wxConvUTF8);
+      return std::string(gps_save_string);
 }
 
-int Garmin_GPS_SendWaypoints( wxString &port_name, RoutePointList *wplist)
+int Garmin_GPS_SendWaypoints(std::string &port_name, RoutePointList *wplist)
 {
       int ret_val = 0;
 
@@ -129,7 +115,7 @@ int Garmin_GPS_SendWaypoints( wxString &port_name, RoutePointList *wplist)
 
 
       //    Transmit the list to the GPS receiver
-      int xfer_result = GPS_Command_Send_Waypoint(port_name.mb_str(), ppway, nPoints, 0 /*int (*cb)(GPS_PWay *)*/);
+      int xfer_result = GPS_Command_Send_Waypoint(std::string.mb_str(), ppway, nPoints, 0 /*int (*cb)(GPS_PWay *)*/);
       ret_val = xfer_result;
 
       //  Free all the memory
@@ -379,3 +365,5 @@ int Garmin_USB_Off(void)
       return ret_val;
 }
 */
+
+#endif

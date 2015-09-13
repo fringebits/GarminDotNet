@@ -23,32 +23,9 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,  USA.         *
  **************************************************************************/
 
-#ifndef __NAVUTIL__
-#define __NAVUTIL__
+#pragma once
 
-
-#include <wx/config.h>
-#include <wx/confbase.h>
-#include <wx/fileconf.h>
-#include <wx/sound.h>
-
-#ifdef __WXMSW__
-#include <wx/msw/regconf.h>
-#include <wx/msw/iniconf.h>
-#endif
-
-#ifdef OCPN_USE_PORTAUDIO
-#include "portaudio.h"
-#endif
-
-#include "bbox.h"
-#include "chcanv.h"
-#include "tinyxml.h"
-#include "chartdbs.h"
-#include "RoutePoint.h"
-#include "vector2D.h"
-#include "Route.h"
-#include "SelectItem.h"
+#include <string>
 
 enum
 {
@@ -70,19 +47,17 @@ enum
     SPEED_MS
 };
 
-extern bool LogMessageOnce(const wxString &msg);
+extern bool LogMessageOnce(const std::string &msg);
 extern double toUsrDistance( double nm_distance, int unit = -1 );
 extern double fromUsrDistance( double usr_distance, int unit = -1 );
 extern double toUsrSpeed( double kts_speed, int unit = -1 );
 extern double fromUsrSpeed( double usr_speed, int unit = -1 );
-extern wxString getUsrDistanceUnit( int unit = -1 );
-extern wxString getUsrSpeedUnit( int unit = -1 );
-extern wxString toSDMM(int NEflag, double a, bool hi_precision = true);
-extern void AlphaBlending( ocpnDC& dc, int x, int y, int size_x, int size_y, float radius,
-                                      wxColour color, unsigned char transparency );
+extern std::string getUsrDistanceUnit(int unit = -1);
+extern std::string getUsrSpeedUnit(int unit = -1);
+extern std::string toSDMM(int NEflag, double a, bool hi_precision = true);
 
-extern double fromDMM(wxString sdms);
-extern double parseLatLon(wxString latlon);
+extern double fromDMM(std::string sdms);
+extern double parseLatLon(std::string latlon);
 
 class Route;
 class NavObjectCollection;
@@ -94,7 +69,7 @@ class NavObjectChanges;
 //----------------------------------------------------------------------------
 //    Track
 //----------------------------------------------------------------------------
-class Track : public wxEvtHandler, public Route
+class Track : public Route
 {
       public:
             Track(void);
@@ -230,116 +205,7 @@ public:
       
 //    These members are set/reset in Options dialog
       bool  m_bShowDebugWindows;
-
-
-
 };
-
-
-/*
-#include <wx/fontdlg.h>
-
-class WXDLLEXPORT X11FontPicker : public wxGenericFontDialog
-{
-public:
-      X11FontPicker(wxFrame *parent);
-      ~X11FontPicker();
-
-      virtual void CreateWidgets();
-
-
-};
-*/
-
-/*
- * X11FontPicker DIALOG
- */
-#include <wx/fontdlg.h>
-
-class wxChoice;
-class WXDLLEXPORT wxText;
-class wxCheckBox;
-class WXDLLEXPORT MyFontPreviewer;
-
-/*
-enum
-{
-      wxID_FONT_UNDERLINE = 3000,
-      wxID_FONT_STYLE,
-      wxID_FONT_WEIGHT,
-      wxID_FONT_FAMILY,
-      wxID_FONT_COLOUR,
-      wxID_FONT_SIZE
-};
-*/
-
-class WXDLLEXPORT X11FontPicker : public wxFontDialogBase
-{
-      public:
-            X11FontPicker() { Init(); }
-            X11FontPicker(wxWindow *parent, const wxFontData& data)  : wxFontDialogBase(parent, data) { Init(); }
-            virtual ~X11FontPicker();
-
-            virtual int ShowModal();
-
-
-    // deprecated, for backwards compatibility only
-//            X11FontPicker(wxWindow *parent, const wxFontData *data)
-//      : wxFontDialogBase(parent, data) { Init(); }
-
-    // Internal functions
-            void OnCloseWindow(wxCloseEvent& event);
-
-            virtual void CreateWidgets();
-            virtual void InitializeFont();
-
-            void OnChangeFont(wxCommandEvent& event);
-            void OnChangeFace(wxCommandEvent& event);
-
-      protected:
-    // common part of all ctors
-            void Init();
-
-            virtual bool DoCreate(wxWindow *parent);
-            void InitializeAllAvailableFonts();
-            void SetChoiceOptionsFromFacename(const wxString &facename);
-            void DoFontChange(void);
-
-            wxFont dialogFont;
-
-            wxChoice    *familyChoice;
-            wxChoice    *styleChoice;
-            wxChoice    *weightChoice;
-            wxChoice    *colourChoice;
-            wxCheckBox  *underLineCheckBox;
-            wxChoice    *pointSizeChoice;
-
-            MyFontPreviewer *m_previewer;
-            bool        m_useEvents;
-
-            wxArrayString     *pFaceNameArray;
-
-            wxFont            *pPreviewFont;
-
-    //  static bool fontDialogCancelled;
-            DECLARE_EVENT_TABLE()
-                        DECLARE_DYNAMIC_CLASS(X11FontPicker)
-};
-
-//---------------------------------------------------------------------------------
-//      Vector Stuff for Hit Test Algorithm
-//---------------------------------------------------------------------------------
-
-extern "C" double vGetLengthOfNormal(pVector2D a, pVector2D b, pVector2D n);
-extern "C" double vDotProduct(pVector2D v0, pVector2D v1);
-extern "C" pVector2D vAddVectors(pVector2D v0, pVector2D v1, pVector2D v);
-extern "C" pVector2D vSubtractVectors(pVector2D v0, pVector2D v1, pVector2D v);
-extern "C" double vVectorMagnitude(pVector2D v0);
-extern "C" double vVectorSquared(pVector2D v0);
 
 //      Simple and fast CRC32 calculator
-
 extern "C" unsigned int crc32buf(unsigned char *buf, size_t len);
-
-
-#endif

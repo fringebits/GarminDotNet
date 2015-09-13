@@ -19,37 +19,26 @@
 
  */
 
+#pragma once
 
-#ifndef garmin_wrapper_h
-#define garmin_wrapper_h
-
-#include "wx/wxprec.h"
-#ifndef  WX_PRECOMP
-  #include "wx/wx.h"
-#endif //precompiled header
-
-#include "inc/navutil.h"
+#define USE_WRAPPER 0
 
 /*  Wrapped interface from higher level objects   */
-int Garmin_GPS_Init( wxString &port_name);
-int Garmin_GPS_Open( wxString &port_name );
-int Garmin_GPS_PVT_On( wxString &port_name );
-int Garmin_GPS_PVT_Off( wxString &port_name );
+int Garmin_GPS_Open(const char* port_name);
+
+#if (USE_WRAPPER)
+int Garmin_GPS_PVT_On(const std::string &port_name);
+int Garmin_GPS_PVT_Off(const std::string &port_name);
 int Garmin_GPS_GetPVT(void *pvt);
 void Garmin_GPS_ClosePortVerify(void);
 
+std::string Garmin_GPS_GetSaveString();
 
-wxString Garmin_GPS_GetSaveString();
+int Garmin_GPS_SendWaypoints(std::string &port_name, RoutePointList *wplist);
+int Garmin_GPS_SendRoute(std::string &port_name, Route *pr, wxGauge *pProgress);
 
-int Garmin_GPS_SendWaypoints( wxString &port_name, RoutePointList *wplist);
-int Garmin_GPS_SendRoute( wxString &port_name, Route *pr, wxGauge *pProgress);
-
-wxString GetLastGarminError(void);
+std::string GetLastGarminError(void);
 
 int Garmin_USB_On(void);
 int Garmin_USB_Off(void);
-
-
-
-#endif      /* garmin_wrapper_h */
-
+#endif
