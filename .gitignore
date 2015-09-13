@@ -1,0 +1,104 @@
+
+# python files
+*.pyc
+
+# ignore test-applications
+testapp.a
+a.out
+
+# configure-based projects
+.deps
+.dirstamp
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+
+# Compiled Dynamic libraries
+*.so
+
+# Compiled FX Shaders
+*.fxo
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+
+*.pdb/
+
+#OS junk files
+[Tt]humbs.db
+*.DS_Store
+profile
+
+#XCode files
+*.mode1
+*.mode1v3
+*.mode2v3
+*.perspective
+*.perspectivev3
+*.pbxuser
+*.xcworkspace
+xcuserdata
+*~.nib
+*.swp
+build/*
+
+#Visual Studio files
+*.[Oo]bj
+*.user
+*.aps
+*.vsp
+*.vspscc
+*.vssscc
+*_i.c
+*_i.h
+*_p.c
+*.ncb
+*.suo
+*.tlb
+*.tlh
+*.bak
+*.[Cc]ache
+*.ilk
+*.log
+*.lib
+*.sbr
+*.sdf
+*.opensdf
+*.unsuccessfulbuild
+*.vspx
+*.psess
+ipch/
+obj/
+[Bb]in
+[Dd]ebug/
+[Rr]elease/
+Ankh.NoLoad
+
+#MonoDevelop
+*.pidb
+*.userprefs
+
+#Tooling
+_ReSharper*/
+*.resharper
+[Tt]est[Rr]esult*
+
+#Project files
+[Bb]uild/
+
+#Subversion files
+.svn
+
+# Office Temp Files
+~$*
+
+#NuGet
+packages/
+
+#ncrunch
+*ncrunch*
+*crunch*.local.xml
